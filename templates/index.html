@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Brand Guide in 30 Minuten</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <h1>Personal Brand Guide in 30 Minuten</h1>
+            <p class="lead">Creëer een krachtig personal brand met behulp van superhelden archetypes</p>
+        </div>
+    </header>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="bi bi-shield-fill"></i> Brand Guide</a>
+            <div class="progress-container ms-auto me-3">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                </div>
+                <small class="progress-text">0% Voltooid</small>
+            </div>
+            <button class="btn btn-primary" onclick="saveDraft()">
+                <i class="bi bi-save"></i> Opslaan
+            </button>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        <!-- Stap 1: Superheld Selectie -->
+        <section id="hero-selection" class="mb-5">
+            <h2><i class="bi bi-person-badge"></i> Stap 1: Kies je Superheld</h2>
+            <p class="lead">Selecteer een superheld die jouw brand het beste vertegenwoordigt</p>
+            
+            <div class="hero-grid">
+                {% for hero in superheroes.values() %}
+                <div class="hero-card" data-hero="{{ hero.id }}">
+                    <div class="hero-info">
+                        <h3>{{ hero.name }}</h3>
+                        <div class="hero-details">
+                            <p><strong>Staat voor:</strong> {{ hero.stands_for }}</p>
+                            <p><strong>Staat tegen:</strong> {{ hero.stands_against }}</p>
+                            <p><strong>Gebreken:</strong> {{ hero.flaws }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="card mt-4" id="hero-customization">
+                <div class="card-body">
+                    <h3>Pas je Held Aan</h3>
+                    <div class="form-group mb-3">
+                        <label>Staat voor</label>
+                        <textarea class="form-control" name="stands_for" rows="3"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Staat tegen</label>
+                        <textarea class="form-control" name="stands_against" rows="3"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Gebreken</label>
+                        <textarea class="form-control" name="flaws" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ideale Klant Sectie -->
+        <section id="ideal-client" class="mb-5">
+            <h2><i class="bi bi-person-heart"></i> Stap 2: Definieer je Ideale Klant</h2>
+            <p class="lead">Beschrijf jouw ideale klant die een doel wil bereiken maar problemen heeft</p>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label>Mijn ideale klant is:</label>
+                        <textarea class="form-control" name="ideal_client" rows="3" placeholder="[VUL HIER DE PERSOON DIE EEN DOEL WIL BEREIKEN MAAR PROBLEMEN HEEFT]"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Hun grootste probleem:</label>
+                        <textarea class="form-control" name="client_problem" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Hun gewenste resultaat:</label>
+                        <textarea class="form-control" name="client_goal" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brand Creatie -->
+        <section id="brand-creation" class="mb-5">
+            <h2><i class="bi bi-building"></i> Stap 3: Creëer je Brand</h2>
+            
+            <!-- Brand Pilaren -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Brand Pilaren</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label>Waar sta je voor?</label>
+                        <textarea class="form-control" name="brand_stands_for" rows="3" placeholder="Bijv: Slimme eenvoud, Design dat werkt, etc."></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Waar sta je tegen?</label>
+                        <textarea class="form-control" name="brand_stands_against" rows="3" placeholder="Bijv: Gedateerde oplossingen, Onnodige complexiteit, etc."></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Je Principes</label>
+                        <textarea class="form-control" name="principles" rows="3" placeholder="Wat zijn jouw belangrijkste principes?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tone of Voice -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Tone of Voice</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Hoe communiceer je?</label>
+                        <textarea class="form-control" name="tone_of_voice" rows="3" placeholder="Beschrijf je communicatiestijl"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visuele Identiteit -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Visuele Identiteit</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label>Kleuren & Typografie</label>
+                        <textarea class="form-control" name="visual_identity" rows="3" placeholder="Beschrijf je visuele stijl"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Kledingstijl & Beelden</label>
+                        <textarea class="form-control" name="visual_style" rows="3" placeholder="Hoe presenteer je jezelf visueel?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aanbod & Gedrag -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Aanbod & Gedrag</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label>Wat bied je aan?</label>
+                        <textarea class="form-control" name="offer" rows="3" placeholder="Ik help [IDEALE KLANT] met [PROBLEEM] door [METHODE]"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Aanbod Principes</label>
+                        <textarea class="form-control" name="offer_principles" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Gedrag</label>
+                        <textarea class="form-control" name="behavior" rows="3" placeholder="Welk gedrag past bij jouw brand?"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Waarom & Missie -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Waarom & Missie</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label>Jouw Waarom</label>
+                        <textarea class="form-control" name="why" rows="3" placeholder="Waarom doe je wat je doet?"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Missie (lang)</label>
+                        <textarea class="form-control" name="mission_long" rows="3" placeholder="Je uitgebreide missie"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Missie (één zin)</label>
+                        <textarea class="form-control" name="mission_short" rows="1" placeholder="Je missie in één krachtige zin"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vijanden & Slogans -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Vijanden & Slogans</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label>Brand Vijanden</label>
+                        <textarea class="form-control" name="enemies" rows="3" placeholder="Tegen welke zaken of ideeën strijd je?"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Slogans</label>
+                        <textarea class="form-control" name="slogans" rows="3" placeholder="Jouw kenmerkende slogans"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Brand Samenvatting -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h3>Brand Samenvatting</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label>Mijn brand draait om...</label>
+                        <textarea class="form-control" name="brand_summary" rows="1" placeholder="Vat je brand samen in één krachtige zin"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-primary" onclick="generatePDF()">
+                    <i class="bi bi-file-pdf"></i> Genereer PDF
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer mt-5">
+        <div class="container text-center">
+            <p>&copy; 2025 Personal Brand Guide</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

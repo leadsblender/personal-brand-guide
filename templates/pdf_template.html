@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        @page {
+            margin: 2.5cm;
+            @top-center {
+                content: "Personal Brand Guide";
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                color: #666;
+            }
+            @bottom-center {
+                content: counter(page);
+                font-family: Arial, sans-serif;
+                font-size: 10pt;
+                color: #666;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #2563eb;
+            font-size: 24pt;
+            margin-bottom: 1cm;
+            text-align: center;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 0.5cm;
+        }
+        h2 {
+            color: #1d4ed8;
+            font-size: 18pt;
+            margin-top: 1cm;
+            margin-bottom: 0.5cm;
+        }
+        .section {
+            margin-bottom: 1cm;
+            page-break-inside: avoid;
+        }
+        .hero-section {
+            background-color: #f8fafc;
+            padding: 1cm;
+            border-radius: 5mm;
+            margin-bottom: 1cm;
+        }
+        .brand-pillars {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1cm;
+            margin-bottom: 1cm;
+        }
+        .pillar {
+            background-color: #f8fafc;
+            padding: 0.5cm;
+            border-radius: 3mm;
+        }
+        .pillar h3 {
+            color: #2563eb;
+            margin-top: 0;
+        }
+        .principles {
+            columns: 2;
+            column-gap: 1cm;
+            margin-bottom: 1cm;
+        }
+        .principle {
+            break-inside: avoid;
+            margin-bottom: 0.5cm;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ guide.title }}</h1>
+
+    <div class="section hero-section">
+        <h2>Superheld Profiel</h2>
+        <p><strong>Gekozen held:</strong> {{ guide.hero_name }}</p>
+        <p><strong>Staat voor:</strong> {{ guide.hero_stands_for }}</p>
+        <p><strong>Staat tegen:</strong> {{ guide.hero_stands_against }}</p>
+        <p><strong>Gebreken:</strong> {{ guide.hero_flaws }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Ideale Klant</h2>
+        <p>{{ guide.ideal_client }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Brand Pilaren</h2>
+        <div class="brand-pillars">
+            <div class="pillar">
+                <h3>Waarvoor we staan</h3>
+                <p>{{ guide.brand_pillars }}</p>
+            </div>
+            <div class="pillar">
+                <h3>Tone of Voice</h3>
+                <p>{{ guide.tone_of_voice }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Visuele Identiteit</h2>
+        <p>{{ guide.visual_identity }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Aanbod Principes</h2>
+        <div class="principles">
+            {% for principle in guide.offer_principles.split('\n') %}
+                {% if principle.strip() %}
+                    <div class="principle">• {{ principle }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Gedrag</h2>
+        <p>{{ guide.behavior }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Ons Waarom</h2>
+        <p>{{ guide.why }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Onze Vijanden</h2>
+        <div class="principles">
+            {% for enemy in guide.enemies.split('\n') %}
+                {% if enemy.strip() %}
+                    <div class="principle">• {{ enemy }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Slogans</h2>
+        <div class="principles">
+            {% for slogan in guide.slogans.split('\n') %}
+                {% if slogan.strip() %}
+                    <div class="principle">"{{ slogan }}"</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Brand Samenvatting</h2>
+        <p>{{ guide.brand_summary }}</p>
+    </div>
+
+    <div class="section">
+        <h2>Missie</h2>
+        <p><strong>Volledige missie:</strong><br>{{ guide.mission_statement }}</p>
+        <p><strong>Korte versie:</strong><br>{{ guide.mission_statement_short }}</p>
+    </div>
+</body>
+</html>
