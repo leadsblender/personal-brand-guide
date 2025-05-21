@@ -1,23 +1,25 @@
-from flask import Flask, request, send_from_directory, render_template
+from flask import Flask
 from src import create_app
-from .static import serve_static
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = create_app()
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
-# Route voor static files
-@app.route('/static/<path:path>')
-def static_file(path):
-    return serve_static(path)
-
-# Route voor alle andere paden
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def catch_all(path):
-    if path.startswith('api/'):
-        return app.handle_request()
-    return render_template('index.html')
-
-# Handler voor Vercel
+# Voor Vercel serverless functions
 def handler(request):
-    with app.request_context(request):
-        return app.handle_request()
+    """Handle requests in a Vercel serverless function."""
+    if request.method == 'GET':
+        response = app.handle_request()
+        return {
+            'statusCode': response.status_code,
+            'headers': dict(response.headers),
+            'body': response.get_data(as_text=True)
+        }
+    return {
+        'statusCode': 405,
+        'body': 'Method not allowed'
+    }
+
+# Voor lokale ontwikkeling
+if __name__ == '__main__':
+    app.run(port=5000)
